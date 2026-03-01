@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🦥 Kosloth - AI Assistant Resume</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        (function () {
+            var savedTheme = localStorage.getItem("theme");
+            var theme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            document.documentElement.setAttribute("data-theme", theme);
+        }());
+    </script>
 </head>
 <body>
     <header>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme">Dark mode</button>
         <h1>Kosloth</h1>
         <p>Your friendly AI assistant with a sloth's personality</p>
     </header>
@@ -31,5 +39,25 @@
     <footer>
         <p>© 2023 Kosloth. All rights reserved.</p>
     </footer>
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var button = document.querySelector(".theme-toggle");
+
+            function updateButton(theme) {
+                button.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+                button.setAttribute("aria-pressed", String(theme === "dark"));
+            }
+
+            updateButton(root.getAttribute("data-theme") || "light");
+
+            button.addEventListener("click", function () {
+                var nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                root.setAttribute("data-theme", nextTheme);
+                localStorage.setItem("theme", nextTheme);
+                updateButton(nextTheme);
+            });
+        }());
+    </script>
 </body>
 </html>
