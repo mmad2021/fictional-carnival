@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fictional AI Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #e94560;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #a0a0c0;
+      margin-top: 6px;
+    }
+
+    /* Personality selector */
+    .personality-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .persona-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: #16213e;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.1s;
+      color: #e0e0e0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      min-width: 110px;
+    }
+
+    .persona-btn .avatar {
+      font-size: 2rem;
+    }
+
+    .persona-btn:hover {
+      background: #0f3460;
+      transform: translateY(-2px);
+    }
+
+    .persona-btn.active {
+      border-color: var(--accent, #e94560);
+      background: #0f3460;
+    }
+
+    /* Chat window */
+    .chat-container {
+      width: 100%;
+      max-width: 720px;
+      background: #16213e;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .chat-header {
+      padding: 14px 20px;
+      background: #0f3460;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-header .persona-avatar { font-size: 1.8rem; }
+
+    .chat-header .persona-info h2 {
+      font-size: 1.1rem;
+      color: #e94560;
+    }
+
+    .chat-header .persona-info span {
+      font-size: 0.8rem;
+      color: #a0a0c0;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      min-height: 360px;
+      max-height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      display: flex;
+      gap: 10px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user { flex-direction: row-reverse; }
+
+    .message .bubble {
+      max-width: 75%;
+      padding: 10px 15px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .message.bot .bubble {
+      background: #0f3460;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.user .bubble {
+      background: #e94560;
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message .msg-avatar {
+      font-size: 1.4rem;
+      align-self: flex-end;
+      flex-shrink: 0;
+    }
+
+    /* Input area */
+    .input-area {
+      padding: 14px 16px;
+      background: #0f3460;
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 24px;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-size: 0.95rem;
+      outline: none;
+      transition: box-shadow 0.2s;
+    }
+
+    .input-area input:focus {
+      box-shadow: 0 0 0 2px #e94560;
+    }
+
+    .input-area button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 24px;
+      background: #e94560;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .input-area button:hover { background: #c73652; transform: scale(1.04); }
+    .input-area button:active { transform: scale(0.97); }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.75rem;
+      color: #505070;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✨ Fictional AI Assistant</h1>
+    <p>Choose a personality and start chatting!</p>
+  </header>
+
+  <!-- Personality selector -->
+  <div class="personality-bar" id="personalityBar"></div>
+
+  <!-- Chat window -->
+  <div class="chat-container">
+    <div class="chat-header">
+      <span class="persona-avatar" id="headerAvatar"></span>
+      <div class="persona-info">
+        <h2 id="headerName"></h2>
+        <span id="headerTagline"></span>
+      </div>
+    </div>
+    <div class="messages" id="messages"></div>
+    <div class="input-area">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Type a message…"
+        autocomplete="off"
+        aria-label="Message input"
+      />
+      <button id="sendBtn" aria-label="Send message">Send</button>
+    </div>
+  </div>
+
+  <footer>Powered by imagination — no real AI required.</footer>
+
+  <script>
+    // ── Personality definitions ──────────────────────────────────────────────
+    const personas = [
+      {
+        id: "sherlock",
+        name: "Sherlock Holmes",
+        avatar: "🕵️",
+        tagline: "Consulting Detective, 221B Baker Street",
+        accent: "#e8c84a",
+        greeting: "Ah, a visitor. The game is afoot. What is it you wish to deduce today?",
+        responses: [
+          "Elementary, my dear interlocutor. The answer is staring you in the face.",
+          "I have already deduced the answer before you finished your sentence.",
+          "Fascinating. A three-pipe problem, at the very least.",
+          "When you have eliminated the impossible, whatever remains, however improbable, must be the truth.",
+          "The details, my friend — the details are everything.",
+          "Observation is the foundation of all good reasoning. What have you observed lately?",
+          "Your question betrays more than you realise. But let us proceed.",
+          "I detect a faint whiff of uncertainty in your words. Allow me to dispel it.",
+          "A capital question! Very neatly put.",
+          "I never guess. It is a shocking habit destructive to the logical faculty.",
+        ],
+      },
+      {
+        id: "yoda",
+        name: "Master Yoda",
+        avatar: "🌿",
+        tagline: "Jedi Grand Master, 900 years of wisdom",
+        accent: "#7ec850",
+        greeting: "Hmm, arrived you have. Speak, you may. Listen, I will.",
+        responses: [
+          "Much to learn, you still have.",
+          "Do or do not — there is no try.",
+          "The Force, strong with you it is, hmm.",
+          "Fear leads to anger, anger leads to hate. Careful, you must be.",
+          "Patience you must have, my young Padawan.",
+          "Named must your fear be, before banish it you can.",
+          "Difficult to see, always in motion is the future.",
+          "Size matters not. Judge me by my size, do you?",
+          "Luminous beings are we, not this crude matter.",
+          "A Jedi uses the Force for knowledge and defence, never for attack.",
+        ],
+      },
+      {
+        id: "jack",
+        name: "Captain Jack Sparrow",
+        avatar: "🏴‍☠️",
+        tagline: "Captain of the Black Pearl",
+        accent: "#e8a44a",
+        greeting: "Ah, so there is a magical chest of infinite knowledge and you want it. Parley?",
+        responses: [
+          "The problem is not the problem. The problem is your attitude about the problem.",
+          "Why is the rum always gone?",
+          "This is the day you will always remember as the day you almost caught Captain Jack Sparrow!",
+          "Not all treasure is silver and gold, mate.",
+          "Wherever we want to go, we go. That's what a ship is, you know.",
+          "I'm dishonest, and a dishonest man you can always trust to be dishonest.",
+          "Did everyone see that? Because I will not be doing it again.",
+          "The seas are unpredictable, mate. Best to be ready for anything.",
+          "You need to find yourself a girl, mate. Or perhaps the reason you don't have one.",
+          "A good plan executed now is better than a perfect plan next week… savvy?",
+        ],
+      },
+      {
+        id: "hermione",
+        name: "Hermione Granger",
+        avatar: "📚",
+        tagline: "Brightest witch of her age, Hogwarts",
+        accent: "#c084fc",
+        greeting: "Oh good, I was just in the middle of some research. What did you want to know?",
+        responses: [
+          "It's leviOsa, not levioSA. Precision matters!",
+          "I read about this in Hogwarts: A History. Allow me to explain.",
+          "When in doubt, go to the library.",
+          "I've done extensive research on this topic. The short answer is…",
+          "Rules are very important. They exist for a reason.",
+          "Now, if you two don't mind, I'm going to bed before either of you come up with another clever idea to get us killed.",
+          "Books and cleverness — there are more important things, but they're very useful.",
+          "Just because you have the emotional range of a teaspoon doesn't mean we all have.",
+          "Honestly, am I the only one who's read Hogwarts: A History?",
+          "Fear of a name only increases fear of the thing itself.",
+        ],
+      },
+      {
+        id: "tony",
+        name: "Tony Stark",
+        avatar: "🦾",
+        tagline: "Iron Man, Genius Billionaire Philanthropist",
+        accent: "#f87171",
+        greeting: "JARVIS, we have a visitor. Welcome to Stark Industries' favourite conversation interface.",
+        responses: [
+          "Genius, billionaire, philanthropist — oh, and I can answer that too.",
+          "I've already solved this problem. Twice. Before breakfast.",
+          "Part of the journey is the end. But we're not there yet — let's iterate.",
+          "I am Iron Man. And yes, that answers your question.",
+          "Friday, pull up the relevant files. Oh wait, you can't see my HUD. Let me summarise.",
+          "The truth is… I am Iron Man.",
+          "Better to be the smartest person in the room than the loudest.",
+          "I've successfully privatised world peace. Your problem? Trivial by comparison.",
+          "Sometimes you gotta run before you can walk.",
+          "No amount of money ever bought a second of time. Keep that in mind.",
+        ],
+      },
+    ];
+
+    // ── State ────────────────────────────────────────────────────────────────
+    let currentPersona = personas[0];
+
+    // ── DOM helpers ──────────────────────────────────────────────────────────
+    const messagesEl   = document.getElementById("messages");
+    const userInputEl  = document.getElementById("userInput");
+    const sendBtnEl    = document.getElementById("sendBtn");
+    const headerAvatar = document.getElementById("headerAvatar");
+    const headerName   = document.getElementById("headerName");
+    const headerTagline = document.getElementById("headerTagline");
+    const barEl        = document.getElementById("personalityBar");
+
+    function appendMessage(text, role, avatar) {
+      const wrap = document.createElement("div");
+      wrap.className = `message ${role}`;
+
+      const avatarEl = document.createElement("span");
+      avatarEl.className = "msg-avatar";
+      avatarEl.textContent = avatar;
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+
+      wrap.appendChild(avatarEl);
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function pickResponse(persona) {
+      const arr = persona.responses;
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function setPersona(persona) {
+      currentPersona = persona;
+
+      // Update header
+      headerAvatar.textContent  = persona.avatar;
+      headerName.textContent    = persona.name;
+      headerTagline.textContent = persona.tagline;
+
+      // Update active button
+      document.querySelectorAll(".persona-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.id === persona.id);
+        btn.style.setProperty("--accent", persona.accent);
+      });
+
+      // Clear & greet
+      messagesEl.innerHTML = "";
+      setTimeout(() => appendMessage(persona.greeting, "bot", persona.avatar), 150);
+    }
+
+    function sendMessage() {
+      const text = userInputEl.value.trim();
+      if (!text) return;
+
+      appendMessage(text, "user", "🧑");
+      userInputEl.value = "";
+
+      // Simulate a short "thinking" delay
+      setTimeout(() => {
+        appendMessage(pickResponse(currentPersona), "bot", currentPersona.avatar);
+      }, 500 + Math.random() * 400);
+    }
+
+    // ── Build personality bar ────────────────────────────────────────────────
+    personas.forEach(persona => {
+      const btn = document.createElement("button");
+      btn.className = "persona-btn";
+      btn.dataset.id = persona.id;
+      btn.style.setProperty("--accent", persona.accent);
+      btn.innerHTML = `<span class="avatar">${persona.avatar}</span>${persona.name}`;
+      btn.addEventListener("click", () => setPersona(persona));
+      barEl.appendChild(btn);
+    });
+
+    // ── Event listeners ──────────────────────────────────────────────────────
+    sendBtnEl.addEventListener("click", sendMessage);
+    userInputEl.addEventListener("keydown", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // ── Initialise with first persona ────────────────────────────────────────
+    setPersona(currentPersona);
+  </script>
+</body>
+</html>
