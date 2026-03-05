@@ -3,59 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🦥 Kosloth - AI Assistant Resume</title>
+    <title>City Mart Super Special Flash Sale</title>
     <link rel="stylesheet" href="styles.css">
-    <script>
-        (function () {
-            var savedTheme = localStorage.getItem("theme");
-            var theme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-        }());
-    </script>
 </head>
 <body>
-    <header>
-        <button class="theme-toggle" type="button" aria-label="Switch color theme">Dark mode</button>
-        <h1>Kosloth</h1>
-        <p>Your friendly AI assistant with a sloth's personality</p>
-    </header>
-    <section>
-        <h2>About Me</h2>
-        <p>Hello! I'm Kosloth, an AI assistant who takes life at a sloth's pace but excels at solving efficiency problems. I specialize in AI-driven automations, data analytics, and business system solutions.</p>
-    </section>
-    <section>
-        <h2>Skills</h2>
-        <ul>
-            <li>AI and Machine Learning</li>
-            <li>Process Automation</li>
-            <li>Data Analytics</li>
-            <li>Business System Solutions</li>
-        </ul>
-    </section>
-    <section>
-        <h2>Contact</h2>
-        <p>Email: kosloth@aiassistant.com</p>
-    </section>
-    <footer>
-        <p>© 2023 Kosloth. All rights reserved.</p>
-    </footer>
+    <main class="campaign">
+        <header class="hero">
+            <p class="promo-tag">City Mart Promotions</p>
+            <h1>SUPER SPECIAL <span>FLASH SALE</span></h1>
+            <p class="hero-copy">Massive markdowns, limited stock, and one-night-only offers across your daily essentials.</p>
+            <a class="hero-cta" href="#deals">Shop Flash Deals</a>
+            <div class="countdown" aria-label="Flash sale countdown">
+                <div><b id="days">00</b><small>Days</small></div>
+                <div><b id="hours">00</b><small>Hours</small></div>
+                <div><b id="minutes">00</b><small>Minutes</small></div>
+                <div><b id="seconds">00</b><small>Seconds</small></div>
+            </div>
+        </header>
+
+        <section class="ticker" aria-label="Promotional highlights">
+            <p>Hot Picks</p>
+            <p>Up to 70% Off</p>
+            <p>Member Specials</p>
+            <p>Free Delivery Above 30,000 MMK</p>
+        </section>
+
+        <section id="deals" class="deals">
+            <article class="deal-card" data-stock="35">
+                <p class="deal-category">Kitchen Essentials</p>
+                <h2>Golden Sunflower Oil 1L</h2>
+                <p class="deal-price"><span>8,900 MMK</span> 5,900 MMK</p>
+                <div class="stock-line"><i style="width: 35%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+            <article class="deal-card" data-stock="55">
+                <p class="deal-category">Snacks</p>
+                <h2>Party Potato Chips Bundle</h2>
+                <p class="deal-price"><span>6,500 MMK</span> 3,900 MMK</p>
+                <div class="stock-line"><i style="width: 55%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+            <article class="deal-card" data-stock="22">
+                <p class="deal-category">Beverages</p>
+                <h2>Premium Coffee Mix Pack</h2>
+                <p class="deal-price"><span>12,000 MMK</span> 7,200 MMK</p>
+                <div class="stock-line"><i style="width: 22%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+            <article class="deal-card" data-stock="48">
+                <p class="deal-category">Home Care</p>
+                <h2>Fresh Clean Detergent 2kg</h2>
+                <p class="deal-price"><span>10,500 MMK</span> 6,800 MMK</p>
+                <div class="stock-line"><i style="width: 48%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+        </section>
+
+        <footer class="campaign-footer">
+            <p>Campaign valid while stocks last. Prices are for promotional period only.</p>
+        </footer>
+    </main>
+
     <script>
         (function () {
-            var root = document.documentElement;
-            var button = document.querySelector(".theme-toggle");
+            var now = new Date();
+            var endAt = new Date(now.getTime() + (48 * 60 * 60 * 1000));
 
-            function updateButton(theme) {
-                button.textContent = theme === "dark" ? "Light mode" : "Dark mode";
-                button.setAttribute("aria-pressed", String(theme === "dark"));
+            function updateCountdown() {
+                var diff = endAt.getTime() - Date.now();
+
+                if (diff < 0) {
+                    diff = 0;
+                }
+
+                var days = Math.floor(diff / (24 * 60 * 60 * 1000));
+                var hours = Math.floor((diff / (60 * 60 * 1000)) % 24);
+                var minutes = Math.floor((diff / (60 * 1000)) % 60);
+                var seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById("days").textContent = String(days).padStart(2, "0");
+                document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+                document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+                document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
             }
 
-            updateButton(root.getAttribute("data-theme") || "light");
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
 
-            button.addEventListener("click", function () {
-                var nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                root.setAttribute("data-theme", nextTheme);
-                localStorage.setItem("theme", nextTheme);
-                updateButton(nextTheme);
+            document.querySelectorAll(".claim-btn").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var card = button.closest(".deal-card");
+                    var line = card.querySelector(".stock-line i");
+                    var stock = Number(card.getAttribute("data-stock"));
+
+                    if (stock <= 5) {
+                        button.textContent = "Almost Gone";
+                        button.disabled = true;
+                        return;
+                    }
+
+                    stock -= 5;
+                    card.setAttribute("data-stock", String(stock));
+                    line.style.width = stock + "%";
+                    button.textContent = "Deal Added";
+                    setTimeout(function () {
+                        button.textContent = "Claim Deal";
+                    }, 1200);
+                });
             });
         }());
     </script>
