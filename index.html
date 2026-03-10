@@ -3,71 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Mart Super Special Flash Sale</title>
+    <title>City Mart Flash Frenzy Campaign</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main class="campaign">
-        <header class="hero">
-            <p class="promo-tag">City Mart Promotions</p>
-            <h1>SUPER SPECIAL <span>FLASH SALE</span></h1>
-            <p class="hero-copy">Massive markdowns, limited stock, and one-night-only offers across your daily essentials.</p>
-            <a class="hero-cta" href="#deals">Shop Flash Deals</a>
-            <div class="countdown" aria-label="Flash sale countdown">
-                <div><b id="days">00</b><small>Days</small></div>
-                <div><b id="hours">00</b><small>Hours</small></div>
-                <div><b id="minutes">00</b><small>Minutes</small></div>
-                <div><b id="seconds">00</b><small>Seconds</small></div>
+    <main class="flash-page">
+        <section class="hero" aria-label="Flash sale campaign intro">
+            <p class="campaign-tag">City Mart | 7 Days Fresh Deals</p>
+            <h1>FLASH FRENZY</h1>
+            <p class="hero-copy">The fastest cart wins. Ultra-limited drops, instant markdowns, and surprise price bombs across fresh essentials.</p>
+            <div class="hero-actions">
+                <a class="hero-cta" href="#deals">Grab Deals Now</a>
+                <button class="hero-ghost" id="surpriseDeal" type="button">Surprise Me</button>
             </div>
-        </header>
-
-        <section class="ticker" aria-label="Promotional highlights">
-            <p>Hot Picks</p>
-            <p>Up to 70% Off</p>
-            <p>Member Specials</p>
-            <p>Free Delivery Above 30,000 MMK</p>
+            <div class="countdown-wrap">
+                <p>Campaign closes in</p>
+                <div class="countdown" aria-label="Flash sale countdown">
+                    <div><b id="days">00</b><small>Days</small></div>
+                    <div><b id="hours">00</b><small>Hours</small></div>
+                    <div><b id="minutes">00</b><small>Minutes</small></div>
+                    <div><b id="seconds">00</b><small>Seconds</small></div>
+                </div>
+            </div>
         </section>
 
-        <section id="deals" class="deals">
-            <article class="deal-card" data-stock="35">
-                <p class="deal-category">Kitchen Essentials</p>
-                <h2>Golden Sunflower Oil 1L</h2>
-                <p class="deal-price"><span>8,900 MMK</span> 5,900 MMK</p>
-                <div class="stock-line"><i style="width: 35%"></i></div>
+        <section class="momentum" aria-label="Campaign momentum stats">
+            <article>
+                <small>LIVE CLAIMS</small>
+                <b id="claimedCount">0</b>
+            </article>
+            <article>
+                <small>AVG SAVE</small>
+                <b>41%</b>
+            </article>
+            <article>
+                <small>HOTTEST WINDOW</small>
+                <b>7 PM - 9 PM</b>
+            </article>
+            <article>
+                <small>DELIVERY PERK</small>
+                <b>Free above 30,000 MMK</b>
+            </article>
+        </section>
+
+        <section class="doorbuster" aria-label="Top one-day flash deal" data-stock="90">
+            <div class="doorbuster-copy">
+                <p class="kicker">Doorbuster Drop</p>
+                <h2>Fresh Chicken Whole 1kg</h2>
+                <p class="deal-price"><span>14,500 MMK</span> 8,900 MMK</p>
+                <p class="doorbuster-note">New batch unlock every 2 hours. Claim before this run is gone.</p>
+                <button class="claim-btn" type="button">Claim Doorbuster</button>
+            </div>
+            <div class="stock-card" aria-label="Doorbuster stock level">
+                <p>Remaining stock</p>
+                <b id="doorbusterStock">90%</b>
+                <div class="stock-line"><i id="doorbusterLine" style="width: 90%"></i></div>
+            </div>
+        </section>
+
+        <section class="filters" aria-label="Deal category filter">
+            <button type="button" class="chip is-active" data-filter="all">All</button>
+            <button type="button" class="chip" data-filter="fresh">Fresh</button>
+            <button type="button" class="chip" data-filter="grocery">Grocery</button>
+            <button type="button" class="chip" data-filter="home">Home Care</button>
+            <button type="button" class="chip" data-filter="beverage">Beverage</button>
+        </section>
+
+        <section id="deals" class="deals" aria-label="Flash deals grid">
+            <article class="deal-card" data-cat="fresh" data-stock="76" data-initial="100">
+                <p class="deal-category">Fresh</p>
+                <h3>Farm Eggs 30 Pack</h3>
+                <p class="deal-price"><span>9,800 MMK</span> 6,900 MMK</p>
+                <div class="stock-line"><i style="width: 76%"></i></div>
                 <button class="claim-btn" type="button">Claim Deal</button>
             </article>
-            <article class="deal-card" data-stock="55">
-                <p class="deal-category">Snacks</p>
-                <h2>Party Potato Chips Bundle</h2>
-                <p class="deal-price"><span>6,500 MMK</span> 3,900 MMK</p>
-                <div class="stock-line"><i style="width: 55%"></i></div>
+            <article class="deal-card" data-cat="grocery" data-stock="54" data-initial="100">
+                <p class="deal-category">Grocery</p>
+                <h3>Thai Fragrant Rice 5kg</h3>
+                <p class="deal-price"><span>23,000 MMK</span> 15,500 MMK</p>
+                <div class="stock-line"><i style="width: 54%"></i></div>
                 <button class="claim-btn" type="button">Claim Deal</button>
             </article>
-            <article class="deal-card" data-stock="22">
-                <p class="deal-category">Beverages</p>
-                <h2>Premium Coffee Mix Pack</h2>
-                <p class="deal-price"><span>12,000 MMK</span> 7,200 MMK</p>
-                <div class="stock-line"><i style="width: 22%"></i></div>
+            <article class="deal-card" data-cat="beverage" data-stock="43" data-initial="100">
+                <p class="deal-category">Beverage</p>
+                <h3>Arabica Coffee 20 Sachets</h3>
+                <p class="deal-price"><span>13,500 MMK</span> 8,100 MMK</p>
+                <div class="stock-line"><i style="width: 43%"></i></div>
                 <button class="claim-btn" type="button">Claim Deal</button>
             </article>
-            <article class="deal-card" data-stock="48">
+            <article class="deal-card" data-cat="home" data-stock="68" data-initial="100">
                 <p class="deal-category">Home Care</p>
-                <h2>Fresh Clean Detergent 2kg</h2>
-                <p class="deal-price"><span>10,500 MMK</span> 6,800 MMK</p>
-                <div class="stock-line"><i style="width: 48%"></i></div>
+                <h3>Eco Dishwashing Liquid 2L</h3>
+                <p class="deal-price"><span>7,500 MMK</span> 4,900 MMK</p>
+                <div class="stock-line"><i style="width: 68%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+            <article class="deal-card" data-cat="fresh" data-stock="37" data-initial="100">
+                <p class="deal-category">Fresh</p>
+                <h3>Salmon Fillet 500g</h3>
+                <p class="deal-price"><span>21,800 MMK</span> 14,200 MMK</p>
+                <div class="stock-line"><i style="width: 37%"></i></div>
+                <button class="claim-btn" type="button">Claim Deal</button>
+            </article>
+            <article class="deal-card" data-cat="grocery" data-stock="61" data-initial="100">
+                <p class="deal-category">Grocery</p>
+                <h3>Sunflower Cooking Oil 1L</h3>
+                <p class="deal-price"><span>8,900 MMK</span> 5,900 MMK</p>
+                <div class="stock-line"><i style="width: 61%"></i></div>
                 <button class="claim-btn" type="button">Claim Deal</button>
             </article>
         </section>
 
         <footer class="campaign-footer">
-            <p>Campaign valid while stocks last. Prices are for promotional period only.</p>
+            <p>Flash Frenzy prices are valid only during campaign hours and while stocks last.</p>
         </footer>
     </main>
 
     <script>
         (function () {
-            var now = new Date();
-            var endAt = new Date(now.getTime() + (48 * 60 * 60 * 1000));
+            var endAt = new Date(Date.now() + (48 * 60 * 60 * 1000));
+            var totalClaims = 0;
 
             function updateCountdown() {
                 var diff = endAt.getTime() - Date.now();
@@ -87,29 +142,94 @@
                 document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
             }
 
+            function applyClaim(button, stockContainer, stockLine, step) {
+                var stock = Number(stockContainer.getAttribute("data-stock"));
+                var nextStock = Math.max(0, stock - step);
+
+                stockContainer.setAttribute("data-stock", String(nextStock));
+                stockLine.style.width = nextStock + "%";
+
+                if (stockContainer.classList.contains("doorbuster")) {
+                    document.getElementById("doorbusterStock").textContent = nextStock + "%";
+                }
+
+                totalClaims += 1;
+                document.getElementById("claimedCount").textContent = String(totalClaims);
+
+                if (nextStock <= 10) {
+                    button.textContent = "Almost Gone";
+                } else {
+                    button.textContent = "Deal Added";
+                }
+
+                if (nextStock === 0) {
+                    button.textContent = "Sold Out";
+                    button.disabled = true;
+                    stockContainer.classList.add("is-sold-out");
+                    return;
+                }
+
+                setTimeout(function () {
+                    if (!button.disabled) {
+                        button.textContent = button.classList.contains("doorbuster-btn") ? "Claim Doorbuster" : "Claim Deal";
+                    }
+                }, 1000);
+            }
+
             updateCountdown();
             setInterval(updateCountdown, 1000);
 
-            document.querySelectorAll(".claim-btn").forEach(function (button) {
+            var doorbusterBtn = document.querySelector(".doorbuster .claim-btn");
+            var doorbuster = document.querySelector(".doorbuster");
+            var doorbusterLine = document.getElementById("doorbusterLine");
+            doorbusterBtn.classList.add("doorbuster-btn");
+            doorbusterBtn.addEventListener("click", function () {
+                applyClaim(doorbusterBtn, doorbuster, doorbusterLine, 7);
+            });
+
+            document.querySelectorAll(".deal-card .claim-btn").forEach(function (button) {
                 button.addEventListener("click", function () {
                     var card = button.closest(".deal-card");
                     var line = card.querySelector(".stock-line i");
-                    var stock = Number(card.getAttribute("data-stock"));
-
-                    if (stock <= 5) {
-                        button.textContent = "Almost Gone";
-                        button.disabled = true;
-                        return;
-                    }
-
-                    stock -= 5;
-                    card.setAttribute("data-stock", String(stock));
-                    line.style.width = stock + "%";
-                    button.textContent = "Deal Added";
-                    setTimeout(function () {
-                        button.textContent = "Claim Deal";
-                    }, 1200);
+                    applyClaim(button, card, line, 6);
                 });
+            });
+
+            document.querySelectorAll(".chip").forEach(function (chip) {
+                chip.addEventListener("click", function () {
+                    var filter = chip.getAttribute("data-filter");
+
+                    document.querySelectorAll(".chip").forEach(function (item) {
+                        item.classList.remove("is-active");
+                    });
+                    chip.classList.add("is-active");
+
+                    document.querySelectorAll(".deal-card").forEach(function (card) {
+                        if (filter === "all" || card.getAttribute("data-cat") === filter) {
+                            card.hidden = false;
+                        } else {
+                            card.hidden = true;
+                        }
+                    });
+                });
+            });
+
+            document.getElementById("surpriseDeal").addEventListener("click", function () {
+                var visibleCards = Array.from(document.querySelectorAll(".deal-card")).filter(function (card) {
+                    return !card.hidden && !card.classList.contains("is-sold-out");
+                });
+
+                if (!visibleCards.length) {
+                    return;
+                }
+
+                var randomCard = visibleCards[Math.floor(Math.random() * visibleCards.length)];
+                randomCard.classList.add("spotlight");
+                randomCard.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                setTimeout(function () {
+                    randomCard.classList.remove("spotlight");
+                }, 1200);
             });
         }());
     </script>
